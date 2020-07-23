@@ -50,7 +50,7 @@ app.post('/login', (req, res) => {
 				} else {
 					client.close();
 					res.json({
-						message: 'login failed-1'
+						message: 'login failed'
 					});
 				}
 			} else {
