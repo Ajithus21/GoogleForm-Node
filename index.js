@@ -26,6 +26,20 @@ app.post('/', (req, res) => {
 	});
 });
 
+//@Admin's Form Creaation
+app.post('/adminForm', (req, res) => {
+	mongoClient.connect(url, { useUnifiedTopology: true }, (err, client) => {
+		let db = client.db('form');
+		db.collection('adminForm').insertOne(req.body, (err, data) => {
+			if (err) throw err;
+			client.close();
+			res.json({
+				message: 'Form Submitted'
+			});
+		});
+	});
+});
+
 //@ Admin Login
 app.post('/login', (req, res) => {
 	//console.log('hello')
@@ -82,7 +96,25 @@ app.get('/forms', (req, res) => {
 	});
 });
 
+app.get('/adminForms', (req, res) => {
+	mongoClient.connect(url, (err, client) => {
+		var db = client.db('form');
+		db.collection('adminForm').find().toArray((er, data) => {
+			if (err) throw err;
+			client.close();
+			if (data) {
+				res.json(data);
+				console.log(data);
+			} else {
+				res.json({
+					message: 'No Forms Found'
+				});
+			}
+		});
+	});
+});
+
 //@Port
-app.listen(process.env.PORT, () => {
+app.listen(3000, () => {
 	console.log('App listening on port 3000!');
 });
